@@ -1,0 +1,16 @@
+package mastermind_projekt;
+
+/**
+ *
+ * @author Jakub
+ */
+public class MasterMind_Projekt {
+
+
+    public static void main(String[] args) {
+      
+        
+        
+    }
+    
+}
