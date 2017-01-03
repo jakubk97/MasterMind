@@ -1,16 +1,100 @@
-package mastermind_projekt;
-
-/**
- *
- * @author Jakub
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
-public class MasterMind_Projekt {
+package mastermind;
 
+import java.util.Random;
+import java.util.Scanner;
+
+public class Mastermind {
 
     public static void main(String[] args) {
-      
-        
+        Scanner sc = new Scanner(System.in);
+        int wybrane = 0;
+        double[] numbers = null;
+        int userChoice;
+        Scanner input = new Scanner(System.in);
+
+        while (true) {
+            userChoice = menu();
+            switch (userChoice) {
+
+                case 1:
+                    System.out.println("\n" + "Nowa gra");
+nowa_gra();
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    zasady_gry();
+                    break;
+                case 4:
+                    System.out.println("\n" + "Żegnaj , zapraszamy ponownie!");
+                    System.exit(0);
+                default:
+                    System.out.println("\n" + "Wybrałeś zły numer, wybnierz jeszcze raz");
+            }
+        }
+
+    }
+
+    public static int menu() {
+
+        int selection;
+        Scanner input = new Scanner(System.in);
+        System.out.println();
+        System.out.println(
+                "\n" + "Witaj w grze MasterMind" + "\n"
+                + "-----------------------\n" + "\n"
+                + "1 - Nowa gra" + "\n" + "\n"
+                + "2 - Ranking" + "\n" + "\n"
+                + "3 - Zasady gry" + "\n" + "\n"
+                + "4 - Wyjdź" + "\n" + "\n");
+
+        selection = input.nextInt();
+        return selection;
+    }
+
+    public static void zasady_gry() {
+        System.out.println(
+                "\n" + "ZASADY GRY" + "\n"
+                + "-----------------------\n" + "\n"
+                + "Gra mastermind polega na odgadnięciu tzw. 'kodu' ,który został wybrany dla Ciebie przez komputer. " + "\n"
+                + "\n" + "Kod to kombinacja 4 cyfr losowo wybranych przez komputer.Warto zwrócić uwagę, że cyfry mogą się powtarzać. " + "\n"
+                + "\n" + "Odpowiedź zwrotna jaką otrzymujemy od komputera wraz z podaniem przez nas kodu może wyglądać następująco: " + "\n"
+                + "\n" + " X - oznacza , że jedna z podanych cyfr (nie koniecznie na pozycji, na której został wypisany) znajduje się na swojej pozycji. " + "\n"
+                + "\n" + " O - oznacza , że jedna z podanych cyfr znajduje się w kodzie , lecz nie jest ona ustawiona na swojej pozycji." + "\n"
+                + "\n" + " '-' - oznacza , że jedna z podanych cyfr nie znajduje się w kodzie. " + "\n"
+                + "\n" + "PUNKTACJA" + "\n"
+                + "-----------------------\n" + "\n"
+                + "\n" + "Każdy ruch to +1 punkt --> im mniejszy wynik tym lepiej! " + "\n");
+    }
+    
+    public static void nowa_gra(){
+        generowanie_kodu();
+    }
+    
+     
+    public static void generowanie_kodu(){
+        int pierwsza,druga,trzecia,czwarta;
+        Random generator = new Random();
+        pierwsza = generator.nextInt(10);
+        druga = generator.nextInt(10);
+        trzecia = generator.nextInt(10);
+        czwarta = generator.nextInt(10);
         
     }
     
+     
+    public static void sprawdzenie_liczb(){
+        
+    }
+    
+     public static void propozycja_gracza(){
+        
+    }
+
 }
