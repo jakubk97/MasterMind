@@ -24,7 +24,7 @@ public class Mastermind {
             switch (userChoice) {
 
                 case 1:
-                    System.out.println("\n" + "Nowa gra" + "\n");
+                    System.out.println("\n" + "Nowa gra" + "\n" + "Podaj swoją propozycje liczb" + "\n\n");
                     nowa_gra();
                     break;
                 case 2:
@@ -34,6 +34,9 @@ public class Mastermind {
                     zasady_gry();
                     break;
                 case 4:
+                    odczytywanie_gry();
+                    break;
+                case 5:
                     System.out.println("\n" + "Żegnaj , zapraszamy ponownie!");
                     System.exit(0);
                 default:
@@ -54,7 +57,8 @@ public class Mastermind {
                 + "1 - Nowa gra" + "\n" + "\n"
                 + "2 - Ranking" + "\n" + "\n"
                 + "3 - Zasady gry" + "\n" + "\n"
-                + "4 - Wyjdź" + "\n" + "\n");
+                + "4 - Odczyt zapisanej gry" + "\n" + "\n"
+                + "5 - Wyjdź" + "\n" + "\n");
 
         selection = input.nextInt();
         return selection;
@@ -70,9 +74,13 @@ public class Mastermind {
                 + "\n" + " X - oznacza , że jedna z podanych cyfr (nie koniecznie na pozycji, na której został wypisany) znajduje się na swojej pozycji. " + "\n"
                 + "\n" + " O - oznacza , że jedna z podanych cyfr znajduje się w kodzie , lecz nie jest ona ustawiona na swojej pozycji." + "\n"
                 + "\n" + " '-' - oznacza , że jedna z podanych cyfr nie znajduje się w kodzie. " + "\n"
+                + "\n" + "ZAPISYWANIE GRY" + "\n"
+                + "-----------------------\n" + "\n"
+                + "\n" + "Aby zapisać grę napisz '10' i wciśnij enter podczas gry " + "\n"
                 + "\n" + "PUNKTACJA" + "\n"
                 + "-----------------------\n" + "\n"
-                + "\n" + "Każdy ruch to +1 punkt --> im mniejszy wynik tym lepiej! " + "\n");
+                + "\n" + "Każdy ruch to +1 punkt --> im mniejszy wynik tym lepiej! " + "\n"
+        );
     }
 
     public static void nowa_gra() throws FileNotFoundException, IOException {
@@ -153,6 +161,7 @@ public class Mastermind {
         }
 
         String odpowiedz = String.format(s, odp1, odp2, odp3, odp4);
+        dozapisu = dozapisu + "\n" +odpowiedz;
         System.out.print(odpowiedz);
         System.out.println();
     }
@@ -249,13 +258,27 @@ public class Mastermind {
     }
 
     static int liczba_1, liczba_2, liczba_3, liczba_4;
-
+static String dozapisu = "";
     public static void propozycja_gracza() throws FileNotFoundException, IOException {
         Scanner sc = new Scanner(System.in);
         String liczba = sc.next();
+        int lic = Integer.parseInt(liczba);
+        if(lic != 10){
+            dozapisu = dozapisu+ "\n" + liczba;
+        }
+        
         if (liczba.length() != 4) {
-            System.out.println("Podano nieprawidłową liczbę cyfr - poprawna ich liczba to 4");
+            //int lic = Integer.parseInt(liczba);
+            if (lic == 10) {
+                zapis_gry();
+                return;
+            }
+            else{
+                System.out.println("Podano nieprawidłową liczbę cyfr - poprawna ich liczba to 4");
             propozycja_gracza();
+            }
+            
+            
         }
         liczba_1 = liczba.charAt(0) - '0';
         liczba_2 = liczba.charAt(1) - '0';
@@ -265,30 +288,66 @@ public class Mastermind {
         sprawdzenie_liczb();
     }
 
+    public static void zapis_gry() throws FileNotFoundException, IOException {
+        
+//        File file = new File("Zapis.txt");
+//        BufferedWriter zapis = new BufferedWriter(new FileWriter(file, true));
+//        //ranking.newLine();
+//        zapis.write(liczba_do_zapisu);
+//        zapis.close();
+
+        PrintWriter zapis = new PrintWriter("Zapis.txt");
+        zapis.println(dozapisu);
+        zapis.close();
+        System.out.println("Gra została zapisana!");
+    }
+
+    static String zapisana_gra;
+
+    public static void odczytywanie_gry() throws FileNotFoundException, IOException {
+        File Ranking = new File("Zapis.txt");
+        Scanner sc_Zapisu = new Scanner(Ranking);
+        int lineNumber = 1;
+        if (sc_Zapisu.hasNextLine() == true) {
+            while (sc_Zapisu.hasNextLine()) {
+                zapisana_gra = sc_Zapisu.nextLine();
+                System.out.println(zapisana_gra);
+            }
+            propozycja_gracza();
+        }
+        else if (sc_Zapisu.hasNextLine() == false || sc_Zapisu.nextLine() == "") {
+            System.out.println("Brak zapisanych gier");
+        }
+        
+
+    }
+
     public static void zapis_rankingu() throws FileNotFoundException, IOException {
         String wynik = "";
         System.out.println("Podaj swoje imie , aby zapisać twój wynik w rankingu.");
         Scanner sc = new Scanner(System.in);
         String imie = sc.next();
-        wynik = imie.toString() + "  Wynik: " + liczba_ruchow;
+        wynik = imie.toString() + "  Wynik: " + liczba_ruchow + "\n";
         File file = new File("Ranking.txt");
         BufferedWriter ranking = new BufferedWriter(new FileWriter(file, true));
+        //ranking.newLine();
         ranking.write(wynik);
         ranking.close();
     }
 
     public static void odczytywanie_rankingu() throws FileNotFoundException {
+        String wynik = "";
         File Ranking = new File("Ranking.txt");
         Scanner sc_Ranking = new Scanner(Ranking);
         int lineNumber = 1;
         if (sc_Ranking.hasNextLine() == true) {
             System.out.println();
             while (sc_Ranking.hasNextLine()) {
-                String wynik = sc_Ranking.nextLine();
+                wynik = sc_Ranking.nextLine();
                 System.out.println(wynik);
                 lineNumber++;
             }
-        } else if (sc_Ranking.hasNextLine() == false) {
+        } else if (sc_Ranking.hasNextLine() == false || sc_Ranking.nextLine() == "") {
             System.out.println("Brak wyników w rankingu");
         }
 
